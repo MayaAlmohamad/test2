@@ -1,4 +1,6 @@
-using NTierTodoApp.DataAccess;
+using DataAccess;
+using DataAccess.Models;
+using System.Collections.Generic;
 
 namespace NTierTodoApp.Business
 {
@@ -6,9 +8,9 @@ namespace NTierTodoApp.Business
     {
         private readonly TaskRepository taskRepository;
 
-        public TaskService(TaskRepository repository)
+        public TaskService()
         {
-            taskRepository = repository;
+            taskRepository = new TaskRepository();
         }
 
         public List<TaskItem> GetTasks()
@@ -18,20 +20,19 @@ namespace NTierTodoApp.Business
 
         public void AddTask(string title)
         {
-            taskRepository.Add(new TaskItem { Title = title, IsCompleted = false });
+            taskRepository.Add(title);
         }
 
         public void CompleteTask(int id)
         {
-            taskRepository.MarkCompleted(id); 
+            taskRepository.Complete(id);
         }
 
         public void DeleteTask(int id)
         {
-            taskRepository.Remove(id);
+            taskRepository.Delete(id);
         }
 
-        // تعديل عنوان المهمة
         public void EditTask(int id, string newTitle)
         {
             taskRepository.UpdateTitle(id, newTitle);
