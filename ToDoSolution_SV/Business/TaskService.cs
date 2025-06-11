@@ -23,7 +23,7 @@ namespace NTierTodoApp.Business
 
         public void CompleteTask(int id)
         {
-            taskRepository.MarkCompleted(id);
+            taskRepository.MarkCompleted(id); 
         }
 
         public void DeleteTask(int id)
