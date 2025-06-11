@@ -1,38 +1,46 @@
-using System.Collections.Generic;
-using System.Linq;
-using NTierTodoApp.Models;
+using DataAccess.Models;
 
-namespace NTierTodoApp.DataAccess
+namespace DataAccess
 {
-    /// <summary>
-    /// مستودع البيانات لإدارة المهام باستخدام قائمة في الذاكرة.
-    /// </summary>
     public class TaskRepository
     {
-        private List<TaskItem> tasks = new List<TaskItem>
-        {
-            new TaskItem { Id = 1, Title = "مهمة أولى", IsComplete = false },
-            new TaskItem { Id = 2, Title = "مهمة ثانية", IsComplete = false }
-        };
+        private readonly List<TaskItem> tasks = new List<TaskItem>();
+        private int nextId = 1;
 
-        public List<TaskItem> GetAll() => tasks;
-
-        public void Add(TaskItem task)
+        public List<TaskItem> GetAll()
         {
-            tasks.Add(task);
+            return tasks;
         }
 
-        public TaskItem GetById(int id)
+        public void Add(string title)
         {
-            return tasks.FirstOrDefault(t => t.Id == id);
+            tasks.Add(new TaskItem
+            {
+                Id = nextId++,
+                Title = title,
+                IsCompleted = false
+            });
         }
 
-        // TODO: تنفيذ دالة حذف المهمة
+        public void Complete(int id)
+        {
+            var task = tasks.FirstOrDefault(t => t.Id == id);
+            if (task != null)
+                task.IsCompleted = true;
+        }
+
         public void Delete(int id)
         {
-            // TODO: ابحث عن المهمة باستخدام id
+            var task = tasks.FirstOrDefault(t => t.Id == id);
+            if (task != null)
+                tasks.Remove(task);
+        }
 
-            // TODO: إذا كانت المهمة موجودة، قم بإزالتها من القائمة
+        public void UpdateTitle(int id, string newTitle)
+        {
+            var task = tasks.FirstOrDefault(t => t.Id == id);
+            if (task != null)
+                task.Title = newTitle;
         }
     }
 }
