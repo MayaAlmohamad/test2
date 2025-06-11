@@ -1,33 +1,51 @@
-@model IEnumerable<TaskItem>
+@model List<DataAccess.Models.TaskItem>
 
-<h2>المهام</h2>
+@{
+    ViewData["Title"] = "To-Do List";
+}
 
+<h1>قائمة المهام</h1>
+
+<!-- نموذج إضافة مهمة جديدة -->
 <form asp-action="AddTask" method="post">
     <input type="text" name="title" placeholder="أدخل عنوان المهمة" required />
     <button type="submit">إضافة</button>
 </form>
 
-<ul>
+<hr />
+
+<!-- قائمة المهام -->
 @foreach (var task in Model)
 {
-    <li>
-        <strong>@task.Title</strong>
+    <div style="margin-bottom: 20px;">
+        <p>
+            <strong>المهمة:</strong>
+            @if (task.IsCompleted)
+            {
+                <span style="text-decoration: line-through;">@task.Title</span>
+            }
+            else
+            {
+                <span>@task.Title</span>
+            }
+        </p>
 
-        <form asp-action="CompleteTask" method="post" style="display:inline">
+        <!-- أزرار التحكم -->
+        <form asp-action="CompleteTask" method="post" style="display:inline;">
             <input type="hidden" name="id" value="@task.Id" />
-            <button type="submit">✔️ إكمال</button>
+            <button type="submit">إكمال</button>
         </form>
 
-        <form asp-action="DeleteTask" method="post" style="display:inline">
+        <form asp-action="DeleteTask" method="post" style="display:inline;">
             <input type="hidden" name="id" value="@task.Id" />
-            <button type="submit">🗑 حذف</button>
+            <button type="submit">حذف</button>
         </form>
 
-        <form asp-action="EditTask" method="post" style="display:inline">
+        <!-- نموذج تعديل العنوان -->
+        <form asp-action="EditTask" method="post" style="margin-top:10px;">
             <input type="hidden" name="id" value="@task.Id" />
-            <input type="text" name="newTitle" placeholder="عنوان جديد" />
-            <button type="submit">✏️ تعديل</button>
+            <input type="text" name="newTitle" value="@task.Title" required />
+            <button type="submit">تعديل العنوان</button>
         </form>
-    </li>
+    </div>
 }
-</ul>
