@@ -23,6 +23,7 @@ namespace NTierTodoApp.Controllers
         {
             if (!string.IsNullOrWhiteSpace(title))
                 taskService.AddTask(title);
+
             return RedirectToAction("Index");
         }
 
@@ -40,12 +41,12 @@ namespace NTierTodoApp.Controllers
             return RedirectToAction("Index");
         }
 
-        // تعديل عنوان المهمة
         [HttpPost]
         public IActionResult EditTask(int id, string newTitle)
         {
             if (!string.IsNullOrWhiteSpace(newTitle))
                 taskService.EditTask(id, newTitle);
+
             return RedirectToAction("Index");
         }
     }
