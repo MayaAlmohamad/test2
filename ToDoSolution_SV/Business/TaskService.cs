@@ -1,45 +1,40 @@
-using System.Collections.Generic;
 using NTierTodoApp.DataAccess;
-using NTierTodoApp.Models;
 
 namespace NTierTodoApp.Business
 {
-    /// <summary>
-    /// طبقة المنطق التجاري لإدارة المهام.
-    /// </summary>
     public class TaskService
     {
-        private readonly TaskRepository repository;
+        private readonly TaskRepository taskRepository;
 
-        public TaskService(TaskRepository repo)
+        public TaskService(TaskRepository repository)
         {
-            repository = repo;
+            taskRepository = repository;
         }
 
-        public List<TaskItem> GetTasks() => repository.GetAll();
+        public List<TaskItem> GetTasks()
+        {
+            return taskRepository.GetAll();
+        }
 
         public void AddTask(string title)
         {
-            if (string.IsNullOrWhiteSpace(title))
-                return;
-
-            var tasks = repository.GetAll();
-            int newId = tasks.Any() ? tasks.Max(t => t.Id) + 1 : 1;
-            var newTask = new TaskItem { Id = newId, Title = title, IsComplete = false };
-            repository.Add(newTask);
+            taskRepository.Add(new TaskItem { Title = title, IsCompleted = false });
         }
 
         public void CompleteTask(int id)
         {
-            var task = repository.GetById(id);
-            if (task != null)
-                task.IsComplete = true;
+            taskRepository.MarkCompleted(id);
         }
 
-        // TODO: تنفيذ دالة حذف المهمة
         public void DeleteTask(int id)
         {
-            // TODO: استدعاء دالة الحذف في طبقة DataAccess
+            taskRepository.Remove(id);
+        }
+
+        // تعديل عنوان المهمة
+        public void EditTask(int id, string newTitle)
+        {
+            taskRepository.UpdateTitle(id, newTitle);
         }
     }
 }
