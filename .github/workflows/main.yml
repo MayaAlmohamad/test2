@@ -1,0 +1,28 @@
+name: CI Workflow
+
+on:
+  push:
+    branches:
+      - main  # يمكنك تغييره إلى الفرع الذي تستخدمه
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '9'  # غيّر الإصدار حسب حاجتك
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Build
+        run: npm run build
+
+      - name: Run Tests
+        run: npm test
