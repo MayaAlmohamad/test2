@@ -1,38 +1,33 @@
-﻿@model List<NTierTodoApp.Models.TaskItem>
+@model IEnumerable<TaskItem>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>إدارة المهام – n-tier</title>
-</head>
-<body>
-    <h1>قائمة المهام (n-tier)</h1>
-    <ul>
-        @foreach (var task in Model)
-        {
-            <li>
-                @if(task.IsComplete)
-                {
-                    <s>@task.Title</s>
-                }
-                else
-                {
-                    @task.Title
-                    <form method="post" asp-action="CompleteTask" style="display:inline;">
-                        <input type="hidden" name="id" value="@task.Id" />
-                        <button type="submit">اكتملت</button>
-                    </form>
-                }
+<h2>المهام</h2>
 
-                <!-- TODO: إضافة زر حذف المهمة -->
-            </li>
-        }
-    </ul>
+<form asp-action="AddTask" method="post">
+    <input type="text" name="title" placeholder="أدخل عنوان المهمة" required />
+    <button type="submit">إضافة</button>
+</form>
 
-    <form method="post" asp-action="AddTask">
-        <input type="text" name="title" placeholder="أضف مهمة جديدة" />
-        <button type="submit">إضافة</button>
-    </form>
-</body>
-</html>
+<ul>
+@foreach (var task in Model)
+{
+    <li>
+        <strong>@task.Title</strong>
+
+        <form asp-action="CompleteTask" method="post" style="display:inline">
+            <input type="hidden" name="id" value="@task.Id" />
+            <button type="submit">✔️ إكمال</button>
+        </form>
+
+        <form asp-action="DeleteTask" method="post" style="display:inline">
+            <input type="hidden" name="id" value="@task.Id" />
+            <button type="submit">🗑 حذف</button>
+        </form>
+
+        <form asp-action="EditTask" method="post" style="display:inline">
+            <input type="hidden" name="id" value="@task.Id" />
+            <input type="text" name="newTitle" placeholder="عنوان جديد" />
+            <button type="submit">✏️ تعديل</button>
+        </form>
+    </li>
+}
+</ul>
