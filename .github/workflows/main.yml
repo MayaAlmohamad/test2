@@ -18,13 +18,13 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '9.0.x'  # متوافق مع net9.0 في مشروعك
+        dotnet-version: '9.0.x'  # متوافق مع net9.0
 
     - name: Restore dependencies
-      run: dotnet restore TodoSolution.sln
+      run: dotnet restore ToDoSolution_SV/TodoSolution.sln
 
     - name: Build solution
-      run: dotnet build TodoSolution.sln --configuration Release --no-restore
+      run: dotnet build ToDoSolution_SV/TodoSolution.sln --configuration Release --no-restore
 
-    - name: Run tests (اختياري إذا عندك مشروع اختبارات)
-      run: dotnet test TodoSolution.sln --no-build --verbosity normal
+    - name: Run tests (اختياري)
+      run: dotnet test ToDoSolution_SV/TodoSolution.sln --no-build --verbosity normal
